@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { LayoutRectangle } from "react-native";
 import { StyleSheet, View } from "react-native";
 
-import { PanGesture as Gesture } from "./PanGesture";
+import { PanGesture as Gesture } from "./boilerplate/PanGesture";
 
 const styles = StyleSheet.create({
   container: {
@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
 
 export const PanGesture = () => {
   const [container, setContainer] = useState<null | LayoutRectangle>(null);
+
   return (
     <View
       style={styles.container}
