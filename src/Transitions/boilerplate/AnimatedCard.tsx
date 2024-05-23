@@ -1,5 +1,9 @@
 import { StyleSheet, Dimensions } from "react-native";
-import Animated, { interpolate, useAnimatedStyle } from "react-native-reanimated";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import { mix } from "react-native-redash";
 
 import type { Cards } from "../../components";
 import { Card, StyleGuide } from "../../components";
@@ -27,12 +31,18 @@ export const AnimatedCard = ({
   index,
 }: AnimatedCardProps) => {
   const style = useAnimatedStyle(() => {
-    const rotate = interpolate(transition.value, [0, 1]);
+    // const rotate = interpolate(
+    //   transition.value,
+    //   [0, 1],
+    //   [0, ((index - 1) * Math.PI) / 6]
+    // );
+
+    const rotate = mix(transition.value, 0, ((index - 1) * Math.PI) / 6);
 
     return {
       transform: [
         { translateX: origin },
-        { rotate:  },
+        { rotate: `${rotate}rad` },
         { translateX: -origin },
       ],
     };
