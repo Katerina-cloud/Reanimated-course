@@ -11,10 +11,11 @@ import Animated, {
 } from "react-native-reanimated";
 import { Dimensions, StyleSheet } from "react-native";
 import { snapPoint } from "react-native-redash";
+import type { Ref } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 
 import type { ProfileModel } from "./Profile";
 import { A, Profile } from "./Profile";
-import { Ref, forwardRef, useImperativeHandle } from "react";
 
 interface SwiperProps {
   onSwipe: () => void;
