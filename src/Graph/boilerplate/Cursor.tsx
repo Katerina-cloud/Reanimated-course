@@ -1,6 +1,12 @@
-/* eslint-disable react-native/no-unused-styles */
-
 import { View, StyleSheet } from "react-native";
+import { PanGestureHandler } from "react-native-gesture-handler";
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  withDecay,
+} from "react-native-reanimated";
 
 import type { Path } from "../../components/AnimatedHelpers";
 
@@ -27,10 +33,43 @@ interface CursorProps {
   path: Path;
 }
 
-export const Cursor = ({}: CursorProps) => {
+export const Cursor = ({ path, length, point, width }: CursorProps) => {
+  const onGestureEvent = useAnimatedGestureHandler({
+    onStart: (event, ctx) => {
+      ctx.offsetX = interpolate(
+        length.value,
+        [0, path.length],
+        [0, width],
+        Extrapolate.CLAMP
+      );
+    },
+    onActive: (event, ctx) => {
+      length.value = interpolate(
+        ctx.offsetX + event.translationX,
+        [0, width],
+        [0, path.length],
+        Extrapolate.CLAMP
+      );
+    },
+    onEnd: ({ velocityX: velocity }) => {
+      length.value = withDecay({ velocity, clamp: [0, path.length] });
+    },
+  });
+  const style = useAnimatedStyle(() => {
+    const translateX = point.value.coord.x - CURSOR / 2;
+    const translateY = point.value.coord.y - CURSOR / 2;
+
+    return {
+      transform: [{ translateX }, { translateY }],
+    };
+  });
   return (
     <View style={StyleSheet.absoluteFill}>
-      <View style={styles.cursor} />
+      <PanGestureHandler {...{ onGestureEvent }}>
+        <Animated.View style={[styles.cursorContainer, style]}>
+          <View style={styles.cursor} />
+        </Animated.View>
+      </PanGestureHandler>
     </View>
   );
 };

@@ -39,6 +39,7 @@ export const Timing = () => {
         primary
         onPress={() => {
           setPlay((prev) => !prev);
+          paused.value = !paused.value;
         }}
       />
     </View>

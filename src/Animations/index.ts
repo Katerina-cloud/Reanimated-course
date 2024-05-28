@@ -1,1 +1,1 @@
-export { Animations } from "./Animations";
+export { Timing as Animations } from "./boilerplate/Animations";
